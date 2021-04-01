@@ -13,13 +13,6 @@ import time
 headers = {
     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"}
 subjects = ['unemployment','gdp','personal income','civilian','population']
-subject_urls={
-    'unemployement':f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Bnsa&ob=sr&od=desc&types=gen;seas&pageID={page_num}',
-    'gdp': f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Breal&ob=sr&od=desc&types=gen&pageID={page_num}',
-    'personal income': f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Breal&ob=sr&od=desc&types=gen&pageID={page_num}',
-    'civilian': f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Bmonthly%3Bnsa&ob=sr&od=desc&types=gen;seas&pageID={page_num}',
-    'population': f'https://fred.stlouisfed.org/searchresults/?st={subject}&t=msa&ob=sr&od=desc&types=gen;geot&pageID={page_num}',
-}
 
 kw_dict={
     'unemployment':['Unemployment','Rate','in','(MSA)'],
@@ -52,6 +45,13 @@ for subject in subjects:
     msa_dict = {}
     #Getting datasets' names
     for page_num in tqdm(range(1,100), position = 0, leave = True):
+        subject_urls={
+    'unemployement':f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Bnsa&ob=sr&od=desc&types=gen;seas&pageID={page_num}',
+    'gdp': f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Breal&ob=sr&od=desc&types=gen&pageID={page_num}',
+    'personal income': f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Breal&ob=sr&od=desc&types=gen&pageID={page_num}',
+    'civilian': f'https://fred.stlouisfed.org/searchresults/?st=MSA&t={subject}%3Bmonthly%3Bnsa&ob=sr&od=desc&types=gen;seas&pageID={page_num}',
+    'population': f'https://fred.stlouisfed.org/searchresults/?st={subject}&t=msa&ob=sr&od=desc&types=gen;geot&pageID={page_num}',
+}
         subject_url = subject_urls[subject]
         response = requests.get(subject_url,headers=headers)
         soup = BeautifulSoup(response.content.decode(),features='lxml')
