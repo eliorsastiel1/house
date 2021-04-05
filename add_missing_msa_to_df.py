@@ -2,19 +2,13 @@ import pandas as pd
 import datetime as dt
 import numpy as np
 
-#מעבר מאלפי איש לקנה מידה של אנשים
-population_data= pd.read_csv("datasets/population_data.csv", index_col=0)
-population_data_new = population_data
-population_data_new['population'] = population_data['population']*1000
-population_data_new.to_csv("population_data_new.csv")
-population_data_new
-
 
 def date_to_datetime(data):
     data['DATE']= pd.to_datetime(data.DATE, format='%d/%m/%Y')
     data['DATE'] = data['DATE'].dt.date
     return data
 
+#read data
 unemployment_data= pd.read_csv("datasets/unemployment_data.csv", index_col=0)
 unemployment_data = date_to_datetime(unemployment_data)
 bpunemp= pd.read_csv("datasets/bpunemp.csv")
@@ -36,7 +30,7 @@ def set_data(data):
 
 
 
-
+#unemployment_data
 bpunemp = set_data(bpunemp)
 bpunemp.rename(columns={ bpunemp.columns[1]: "Unemployment_Rate" }, inplace = True)
 bpunemp['MSA']='Bridgeport-Stamford-Norwalk'
@@ -51,8 +45,7 @@ unemployment_data_new.to_csv("unemployment_data_new.csv")
 
 
 
-
-
+#civilian_data
 bpclf = set_data(bpclf)
 bpclf.rename(columns={ bpclf.columns[1]: "civilian" }, inplace = True)
 bpclf['MSA']='Bridgeport-Stamford-Norwalk'
@@ -67,9 +60,7 @@ civilian_data_new.to_csv("civilian_data_new.csv")
 
 
 
-
-
-
+#personal_income_data
 bpRPI = set_data(bpRPI)
 bpRPI.rename(columns={ bpRPI.columns[1]: "personal income" }, inplace = True)
 bpRPI['MSA']='Bridgeport-Stamford-Norwalk'
@@ -86,3 +77,26 @@ personal_income_data_new = pd.concat([personal_income_data,lvRPI,bpRPI])
 personal_income_data_new = personal_income_data_new.reset_index()
 personal_income_data_new = personal_income_data_new.drop(columns=['index'])
 personal_income_data_new.to_csv("personal_income_data_new.csv")
+
+             
+#population_data
+#מעבר מאלפי איש לקנה מידה של אנשים
+population_data= pd.read_csv("datasets/population_data.csv", index_col=0)
+population_data_new = population_data
+population_data_new['population'] = population_data['population']*1000
+population_data_new['DATE']= pd.to_datetime(population_data_new.DATE)
+
+#Civilian_pop_ratio
+population_data_new['Civilian_pop_ratio'] = np.NaN             
+for row in population_data_new.index:
+    state = population_data_new['State'][row]
+    msa = population_data_new['MSA'][row]
+    year = population_data_new['DATE'][row].year
+    
+    df = civilian_data_new.loc[(civilian_data_new['State'] == state) & (civilian_data_new['MSA'] == msa) & (civilian_data_new['DATE'] == f'{year}-07-01')]
+    if len(df) > 0 :
+        civilianP = df['civilian'].item() / population_data_new['population'][row]
+        population_data_new['Civilian_pop_ratio'][row] = civilianP
+   
+population_data_new.to_csv("population_data_new.csv")
+           
