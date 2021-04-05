@@ -79,7 +79,7 @@ bpRPI['1_Year_change']=bpRPI['personal income'].pct_change(periods=12)
 lvRPI = set_data(lvRPI)
 lvRPI.rename(columns={ lvRPI.columns[1]: "personal income" }, inplace = True)
 lvRPI['MSA']='Las Vegas-Henderson-Paradise'
-lvRPI['State']='CT'
+lvRPI['State']='NV'
 lvRPI['1_Year_change']=lvRPI['personal income'].pct_change(periods=12)
 
 personal_income_data_new = pd.concat([personal_income_data,lvRPI,bpRPI])
