@@ -2,6 +2,7 @@ import pandas as pd
 import datetime as dt
 import numpy as np
 
+#מעבר מאלפי איש לקנה מידה של אנשים
 population_data= pd.read_csv("datasets/population_data.csv", index_col=0)
 population_data_new = population_data
 population_data_new['population'] = population_data['population']*1000
