@@ -2,6 +2,13 @@ import pandas as pd
 import datetime as dt
 import numpy as np
 
+population_data= pd.read_csv("datasets/population_data.csv", index_col=0)
+population_data_new = population_data
+population_data_new['population'] = population_data['population']*1000
+population_data_new.to_csv("population_data_new.csv")
+population_data_new
+
+
 def date_to_datetime(data):
     data['DATE']= pd.to_datetime(data.DATE, format='%d/%m/%Y')
     data['DATE'] = data['DATE'].dt.date
