@@ -20,7 +20,7 @@ dfs = [df.set_index(['DATE', 'MSA','State']) for df in [une_df, civ_df, pop_df,p
 merge_df = pd.concat(dfs, axis=1).reset_index()
 
 #Creating civilian-population ratio column
-#הוכנס בקוד הקודם לתוך הדאטא של האוכ׳
+# דניאל - הוכנס בקוד הקודם לתוך הדאטא של האוכ׳
 #merge_df['civil_pop_ratio'] = merge_df.apply(lambda x: x['civilian']/(x['population']*1000),axis=1)
 
 #Fixing State names bug
