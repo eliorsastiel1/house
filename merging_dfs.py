@@ -4,13 +4,13 @@ from tqdm import tqdm
 #Uploading Dataframes
 une_df = pd.read_csv('unemployment_data_new.csv')
 une_df = une_df.loc[:, ~une_df.columns.str.contains('^Unnamed')]
-pop_df = pd.read_csv('population_data.csv')
+pop_df = pd.read_csv('population_data_new.csv')  #תיקון שם קובץ-דניאל
 pop_df = pop_df.loc[:, ~pop_df.columns.str.contains('^Unnamed')]
 gdp_df = pd.read_csv('gdp_data.csv')
 gdp_df = gdp_df.loc[:, ~gdp_df.columns.str.contains('^Unnamed')]
-pinc_df = pd.read_csv('personal income_data.csv')
+pinc_df = pd.read_csv('personal_income_data_new.csv')   #תיקון שם קובץ-דניאל
 pinc_df = pinc_df.loc[:, ~pinc_df.columns.str.contains('^Unnamed')]
-civ_df = pd.read_csv('civilian_data.csv')
+civ_df = pd.read_csv('civilian_data_new.csv')  #תיקון שם קובץ-דניאל
 civ_df = civ_df.loc[:, ~civ_df.columns.str.contains('^Unnamed')]
 HPI_df = pd.read_csv('HPI_mean_data.csv')
 HPI_df = HPI_df.loc[:, ~HPI_df.columns.str.contains('^Unnamed')]
