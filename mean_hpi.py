@@ -50,9 +50,6 @@ def change_rows(data,name):
     
     hpi = hpi.reset_index()
     hpi = hpi.drop(columns=['index'])
-    
-    hpi['1_Month_change'] = hpi['HPI'].pct_change()
-    hpi['1_Year_change'] = hpi['HPI'].pct_change(periods=12)
 
     hpi.to_csv(f"{name}_data.csv")
     
