@@ -47,8 +47,29 @@ for key in tqdm(list(msa_dict.keys())):
                 HPI_df.loc[index,'State'] = msa_dict[key]
 
 # Merging HPI_df with merged_df
-dfs2 = [df.set_index(['Short_Date', 'MSA','State']) for df in [merge_df,HPI_df]]
-final_df = pd.concat(dfs2, axis=1).reset_index()
+#dfs2 = [df.set_index(['Short_Date', 'MSA','State']) for df in [merge_df,HPI_df]]
+#final_df = pd.concat(dfs2, axis=1).reset_index()
+#final_df.to_csv('final_df.csv')
 
-final_df.to_csv('final_df.csv')
+hpis=[]
 
+for row in merge_df.index:
+    state = merge_df['State'][row]
+    msa = merge_df['MSA'][row]
+    date = merge_df['Short_Date'][row]
+    
+    df = HPI_df.loc[(HPI_df['State'] == state) & (HPI_df['MSA'] == msa) & (HPI_df['Short_Date'] == date)]
+    if len(df) > 0 :
+        df = df[np.isnan(df['HPI'])==False]    #example: Huntington-Ashland
+        if len(df)== 0:
+            hpis.append(np.nan)
+        elif len(df)== 1:
+            hpis.append(df['HPI'].item())
+        else:
+            hpis.append(df['HPI'].mean())
+        
+    else:
+        hpis.append(np.nan)
+        
+merge_df['HPI'] = hpis        
+merge_df.to_csv('final_df.csv')
