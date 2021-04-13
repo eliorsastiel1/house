@@ -72,4 +72,4 @@ for row in merge_df.index:
         hpis.append(np.nan)
         
 merge_df['HPI'] = hpis        
-merge_df.to_csv('final_df.csv')
+merge_df.to_csv('merge_df_with_hpi.csv')
