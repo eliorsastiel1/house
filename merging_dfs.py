@@ -52,12 +52,19 @@ for key in tqdm(list(msa_dict.keys())):
 #final_df.to_csv('final_df.csv')
 
 hpis=[]
+hpis1=[]
+hpis2=[]
+hpis3=[]
 
-for row in merge_df.index:
+for row in tqdm(merge_df.index):
     state = merge_df['State'][row]
     msa = merge_df['MSA'][row]
     date = merge_df['Short_Date'][row]
+    date1 = f'{int(merge_df["Short_Date"][row].split("-")[0])+1}-{merge_df["Short_Date"][row].split("-")[1]}'
+    date2 = f'{int(merge_df["Short_Date"][row].split("-")[0])+2}-{merge_df["Short_Date"][row].split("-")[1]}'
+    date3 = f'{int(merge_df["Short_Date"][row].split("-")[0])+3}-{merge_df["Short_Date"][row].split("-")[1]}'
     
+    #price today
     df = HPI_df.loc[(HPI_df['State'] == state) & (HPI_df['MSA'] == msa) & (HPI_df['Short_Date'] == date)]
     if len(df) > 0 :
         df = df[np.isnan(df['HPI'])==False]    #example: Huntington-Ashland
@@ -71,5 +78,50 @@ for row in merge_df.index:
     else:
         hpis.append(np.nan)
         
+    #price in 1 year
+    df1 = HPI_df.loc[(HPI_df['State'] == state) & (HPI_df['MSA'] == msa) & (HPI_df['Short_Date'] == date1)]
+    if len(df1) > 0 :
+        df1 = df1[np.isnan(df1['HPI'])==False]    #example: Huntington-Ashland
+        if len(df1)== 0:
+            hpis1.append(np.nan)
+        elif len(df1)== 1:
+            hpis1.append(df1['HPI'].item())
+        else:
+            hpis1.append(df1['HPI'].mean())
+        
+    else:
+        hpis1.append(np.nan)
+        
+    #price in 2 years     
+    df2 = HPI_df.loc[(HPI_df['State'] == state) & (HPI_df['MSA'] == msa) & (HPI_df['Short_Date'] == date2)]
+    if len(df2) > 0 :
+        df2 = df2[np.isnan(df2['HPI'])==False]    #example: Huntington-Ashland
+        if len(df2)== 0:
+            hpis2.append(np.nan)
+        elif len(df2)== 1:
+            hpis2.append(df2['HPI'].item())
+        else:
+            hpis2.append(df2['HPI'].mean())
+        
+    else:
+        hpis2.append(np.nan)
+    
+    #price in 3 years    
+    df3 = HPI_df.loc[(HPI_df['State'] == state) & (HPI_df['MSA'] == msa) & (HPI_df['Short_Date'] == date3)]
+    if len(df3) > 0 :
+        df3 = df3[np.isnan(df3['HPI'])==False]    #example: Huntington-Ashland
+        if len(df3)== 0:
+            hpis3.append(np.nan)
+        elif len(df3)== 1:
+            hpis3.append(df3['HPI'].item())
+        else:
+            hpis3.append(df3['HPI'].mean())
+        
+    else:
+        hpis3.append(np.nan)
+        
 merge_df['HPI'] = hpis        
-merge_df.to_csv('merge_df_with_hpi.csv')
+merge_df['HPI_1_year'] = hpis1
+merge_df['HPI_2_year'] = hpis2 
+merge_df['HPI_3_year'] = hpis3 
+merge_df.to_csv('final_with_future_hpis.csv')
